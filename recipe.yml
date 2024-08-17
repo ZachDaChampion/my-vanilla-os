@@ -28,7 +28,6 @@ stages:
   - name: build-libinput-config
     type: shell
     commands:
-    - pushd
     - apt-get install ninja-build meson libinput-dev git -y
     - git clone https://gitlab.com/warningnonpotablewater/libinput-config.git
     - cd libinput-config
@@ -36,9 +35,9 @@ stages:
     - cd build
     - ninja
     - ninja install
+    - cd ../..
     - echo 'scroll-factor=0.33' > /etc/libinput.conf
     - apt-get remove ninja-build meson libinput-dev git -y
-    - popd
 
   # Put your custom actions before this comment
 
