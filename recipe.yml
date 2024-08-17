@@ -1,7 +1,7 @@
 # vib
 
-name: Zach's Vanilla Desktop # Replace this name with your image name
-id: zach0 # Replace this ID with your image ID
+name: slow-scroll # Replace this name with your image name
+id: slow-scroll-zachdachampion # Replace this ID with your image ID
 stages:
 - id: build
   base: ghcr.io/vanilla-os/desktop:main # Optionally, Replace this image URL with a different one i.e. nvidia:main, etc
