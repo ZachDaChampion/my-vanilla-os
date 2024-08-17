@@ -25,19 +25,29 @@ stages:
 
   # Put your custom actions behind this comment
 
+  - name: install-dependencies
+    type: apt
+    source:
+      packages:
+        - ninja-build
+        - libinput-dev
+
   - name: build-libinput-config
+    type: meson
+    source:
+      url: "https://gitlab.com/warningnonpotablewater/libinput-config/-/archive/default/libinput-config-default.tar.gz"
+      type: tar
+
+  - name: set-scroll-speed
     type: shell
     commands:
-    - apt-get install ninja-build meson libinput-dev git -y
-    - git clone https://gitlab.com/warningnonpotablewater/libinput-config.git
-    - cd libinput-config
-    - meson build
-    - cd build
-    - ninja
-    - ninja install
-    - cd ../..
+    - touch /etc/libinput.conf
     - echo 'scroll-factor=0.33' > /etc/libinput.conf
-    - apt-get remove ninja-build meson libinput-dev git -y
+
+  - name: cleanup-ninja-libinput
+    type: shell
+    commands:
+    - apt-get remove ninja-build libinput-dev -y
 
   # Put your custom actions before this comment
 
