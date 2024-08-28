@@ -50,6 +50,17 @@ stages:
     commands:
     - apt-get remove -y ninja-build libinput-dev meson
 
+  - name: download-input-remapper
+    type: shell
+    commands:
+      - wget -O /tmp/input-remapper.deb https://github.com/sezanzeb/input-remapper/releases/download/2.0.1/input-remapper-2.0.1.deb
+
+  - name: install-input-remapper
+    type: dpkg
+    source:
+      paths:
+        - "/tmp/input-remapper.deb"
+
   # Put your custom actions before this comment
 
   - name: set-image-name-abroot
