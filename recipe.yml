@@ -32,6 +32,7 @@ stages:
         - ninja-build
         - libinput-dev
         - meson
+        - dpkg
 
   - name: build-libinput-config
     type: meson
@@ -45,11 +46,6 @@ stages:
     - touch /etc/libinput.conf
     - echo 'scroll-factor=0.33' > /etc/libinput.conf
 
-  - name: cleanup-ninja-libinput
-    type: shell
-    commands:
-    - apt-get remove -y ninja-build libinput-dev meson
-
   - name: download-input-remapper
     type: shell
     commands:
@@ -60,6 +56,11 @@ stages:
     source:
       paths:
         - "/tmp/input-remapper.deb"
+
+  - name: cleanup-user-deps
+    type: shell
+    commands:
+    - apt-get remove -y ninja-build libinput-dev meson dpkg
 
   # Put your custom actions before this comment
 
