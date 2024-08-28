@@ -25,19 +25,15 @@ stages:
 
   # Put your custom actions behind this comment
 
-  - name: install-dependencies
-    type: apt
-    source:
-      packages:
-        - ninja-build
-        - libinput-dev
-        - meson
-
-  - name: build-libinput-config
-    type: meson
-    source:
-      url: "https://gitlab.com/warningnonpotablewater/libinput-config/-/archive/default/libinput-config-default.tar.gz"
-      type: tar
+  - name: setup-libinput-config
+    type: shell
+    commands:
+    - apt-get install ninja-build meson libinput-dev git -y
+    - git clone https://gitlab.com/warningnonpotablewater/libinput-config.git /tmp/libinput-config
+    - (cd /tmp/libinput-config; meson build)
+    - (cd /tmp/libinput-config/build; ninja; ninja install)
+    - echo 'scroll-factor=0.33' > /etc/libinput.conf
+    - apt-get remove -y ninja-build meson libinput-dev git
 
   - name: set-scroll-speed
     type: shell
@@ -50,11 +46,6 @@ stages:
     commands:
       - wget -O /tmp/input-remapper.deb https://github.com/sezanzeb/input-remapper/releases/download/2.0.1/input-remapper-2.0.1.deb
       - apt-get install -y -f /tmp/input-remapper.deb
-
-  - name: cleanup-user-deps
-    type: shell
-    commands:
-    - apt-get remove -y ninja-build libinput-dev meson
 
   # Put your custom actions before this comment
 
