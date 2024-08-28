@@ -32,7 +32,6 @@ stages:
         - ninja-build
         - libinput-dev
         - meson
-        - dpkg
 
   - name: build-libinput-config
     type: meson
@@ -46,21 +45,16 @@ stages:
     - touch /etc/libinput.conf
     - echo 'scroll-factor=0.33' > /etc/libinput.conf
 
-  - name: download-input-remapper
+  - name: install-input-remapper
     type: shell
     commands:
       - wget -O /tmp/input-remapper.deb https://github.com/sezanzeb/input-remapper/releases/download/2.0.1/input-remapper-2.0.1.deb
-
-  - name: install-input-remapper
-    type: dpkg
-    source:
-      paths:
-        - "/tmp/input-remapper.deb"
+      - apt-get install -y -f /tmp/input-remapper.deb
 
   - name: cleanup-user-deps
     type: shell
     commands:
-    - apt-get remove -y ninja-build libinput-dev meson dpkg
+    - apt-get remove -y ninja-build libinput-dev meson
 
   # Put your custom actions before this comment
 
